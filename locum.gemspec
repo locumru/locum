@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Locum::VERSION
   spec.authors       = ["Vasily Shmelev"]
   spec.email         = ["sleephunter@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Locum.ru maintenance interface}
+#  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.homepage      = "http://locum.ru"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,4 +20,9 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "pry"
+
+  spec.add_runtime_dependency "highline"
+  spec.add_runtime_dependency "thor"
+  spec.add_runtime_dependency "json"
 end
