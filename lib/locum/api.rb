@@ -1,7 +1,9 @@
 # encoding: utf-8
 require 'json'
+require 'net/http'
+require 'locum/config'
 
-class Locum::Api
+module Locum::Api
   HOST        = ENV['DEV'] ? 'localhost:3000' : 'locum.ru'
   SCHEMA      = ENV['DEV'] ? 'http' : 'https'
   API_VERSION = 1
@@ -12,11 +14,24 @@ class Locum::Api
     API
   end
 
-  def call(method, params)
+  def self.call(method, params = {}, tokenized = true)
+    token = tokenized ? self.token : nil
+    uri   = URI("#{API}#{method}")
+    res   = Net::HTTP.post_form(
+        uri,
+        { :token  => token }.merge(params)
+    )
 
+    result = JSON.parse(res.body.to_s)
+
+    if result['result'] == 'error'
+      raise ApiError, result['status']
+    end
+
+    result
   end
 
-  def self.read_token
-
+  def self.token
+    Locum::Config.get.token
   end
 end
