@@ -1,4 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-require 'locum/cli'
+require 'rubygems'
+begin
+  require 'locum/cli'
+rescue LoadError => _
+  warn 'Could not load "locum/cli"'
+  exit -1
+end
+
 Locum::CLI.start(ARGV)
