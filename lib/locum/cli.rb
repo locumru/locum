@@ -56,6 +56,15 @@ EOFBLOCK
     display_error(e)
   end
 
+  desc 'projects', 'Список проектов'
+
+  def projects
+    projects = Locum::Projects.new
+    projects.call
+
+    projects.projects.each {|p| say(" * #{p['name']}") }
+  end
+
 
   private
 
