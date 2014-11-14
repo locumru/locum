@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sleephunter@gmail.com"]
   spec.summary       = %q{Locum.ru maintenance interface}
 #  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = "http://locum.ru"
+  spec.homepage      = "https://github.com/locumru/locum"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -19,10 +19,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "pry"
+  spec.add_development_dependency "rake", "~> 10.3"
+  spec.add_development_dependency "pry", "~> 0.10"
 
-  spec.add_runtime_dependency "highline"
-  spec.add_runtime_dependency "thor"
-  spec.add_runtime_dependency "json"
+  spec.add_runtime_dependency "highline", "~> 1.6"
+  spec.add_runtime_dependency "thor", "~> 0.19"
+  spec.add_runtime_dependency "json", "~> 1.8"
 end
