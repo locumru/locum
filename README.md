@@ -1,24 +1,15 @@
 # Locum
 
-TODO: Write a gem description
+Gem предоставляет командный интерфейс (CLI) для панели управления хостинга
+Locum.ru. Gem находится в ранней разработке, любые пожелания приветствуются.
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'locum'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install locum
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ locum help
 
 ## Contributing
 
