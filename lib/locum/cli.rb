@@ -62,7 +62,7 @@ EOFBLOCK
     projects = Locum::Projects.new
     projects.call
 
-    projects.projects.each {|p| say(" * #{p['name']}") }
+    projects.projects.each {|p| say("  * #{p['name']} (##{p['id']} #{p['type']})") }
   end
 
 
