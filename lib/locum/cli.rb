@@ -3,27 +3,47 @@ require 'thor'
 require 'highline/import'
 require 'locum'
 
-class Locum::CLI < Thor
+module Locum
+  class SshCLI < Thor
+    desc 'add', 'Настраивает беспарольную авторизацию по ключу'
+    option :key
 
-  desc 'init', 'Получает token для работы с сервисом'
-  option :login
-  option :password
+    def add
+      key_file = options[:key] || File.join(ENV['HOME'], '.ssh', 'id_rsa.pub')
+      until File.exist?(key_file) do
+        cn.say("Файл #{key_file} не найден.")
+        key_file = Locum.cn.ask('Имя файла с публичным ключом и путём: ')
+      end
+      cn.say "Используется ключ #{key_file}"
 
-  def init
-    cn.say("\nНастройка интерфейса командной строки locum.ru\n\n")
+      ssh_auth = Locum::Ssh.new(key_file)
+      ssh_auth.add_ssh_key
 
-    login    = options[:login] || cn.ask('login: ')
-    password = options[:password] || cn.ask('пароль: ') { |q| q.echo = false }
+      s_out "Теперь вы можете авторизоваться по SSH без пароля"
+    end
+  end
 
-    s_out "Получаем токен https://locum.ru"
+  class CLI < Thor
 
-    authenticator = Locum::Auth.new(login, password)
+    desc 'init', 'Получает token для работы с сервисом'
+    option :login
+    option :password
 
-    authenticator.persist_token
+    def init
+      cn.say("\nНастройка интерфейса командной строки locum.ru\n\n")
 
-    s_in "Токен получен\n\n"
+      login    = options[:login] || cn.ask('login: ')
+      password = options[:password] || cn.ask('пароль: ') { |q| q.echo = false }
 
-    cn.say <<EOFBLOCK
+      s_out "Получаем токен https://locum.ru"
+
+      authenticator = Locum::Auth.new(login, password)
+
+      authenticator.persist_token
+
+      s_in "Токен получен\n\n"
+
+      cn.say <<EOFBLOCK
     Авторизационный токен для доступа к вашим проектам сохранен в
     текущем каталоге в файле <%= color('.locum', BOLD) %>.
     Возможно, вы не хотите, чтобы этот токен попал в систему контроля
@@ -38,51 +58,54 @@ class Locum::CLI < Thor
 
 EOFBLOCK
 
-  rescue ApiError => e
-    display_error(e)
+    rescue ApiError => e
+      display_error(e)
+    end
+
+    desc 'ping', 'Проверка связи с API'
+
+    def ping
+      s_out "PING"
+
+      ping = Locum::Ping.new
+      ping.call
+
+      s_in "PONG login: #{ping.login} till #{ping.valid}\n\n"
+
+    rescue ApiError => e
+      display_error(e)
+    end
+
+    desc 'projects', 'Список проектов'
+
+    def projects
+      projects = Locum::Projects.new
+      projects.call
+
+      projects.projects.each { |p| say("  * #{p['name']} (##{p['id']} #{p['type']})") }
+    end
+
+    desc 'ssh', 'Работа с ключами'
+    subcommand 'ssh', SshCLI
   end
 
-  desc 'ping', 'Проверка связи с API'
+end
 
-  def ping
-    s_out "PING"
+private
 
-    ping = Locum::Ping.new
-    ping.call
+def display_error e
+  cn = HighLine.new
+  cn.say("\n<%= color('Произошла ошибка:', RED) %> #{e.message}")
+end
 
-    s_in "PONG login: #{ping.login} till #{ping.valid}\n\n"
+def cn
+  @cn ||= HighLine.new
+end
 
-  rescue ApiError => e
-    display_error(e)
-  end
+def s_out(s)
+  cn.say("\n<%= color('->', GREEN) %> #{s}")
+end
 
-  desc 'projects', 'Список проектов'
-
-  def projects
-    projects = Locum::Projects.new
-    projects.call
-
-    projects.projects.each {|p| say("  * #{p['name']} (##{p['id']} #{p['type']})") }
-  end
-
-
-  private
-
-  def display_error e
-    cn = HighLine.new
-    cn.say("\n<%= color('Произошла ошибка:', RED) %> #{e.message}")
-  end
-
-  def cn
-    @cn ||= HighLine.new
-  end
-
-  def s_out(s)
-    cn.say("\n<%= color('->', GREEN) %> #{s}")
-  end
-
-  def s_in(s)
-    cn.say("<%= color('<-', CYAN) %> #{s}")
-  end
-
+def s_in(s)
+  cn.say("<%= color('<-', CYAN) %> #{s}")
 end

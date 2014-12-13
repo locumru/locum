@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "highline", "~> 1.6"
   spec.add_runtime_dependency "thor", "~> 0.19"
   spec.add_runtime_dependency "json", "~> 1.8"
+  spec.add_runtime_dependency "net-ssh", "~> 2.9"
 end
