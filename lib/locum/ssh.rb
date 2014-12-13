@@ -2,11 +2,9 @@
 require 'net/ssh'
 
 class Locum::Ssh
-  def initialize(key_file)
+  def add_ssh_key(key_file)
     @key = File.read(key_file).strip
-  end
 
-  def add_ssh_key
     run_on_server("mkdir .ssh")
     run_on_server("echo #{@key} >> .ssh/authorized_keys")
   end

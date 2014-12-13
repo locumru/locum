@@ -4,7 +4,7 @@ require 'highline/import'
 require 'locum'
 
 module Locum
-  class SshCLI < Thor
+  class SshKey < Thor
     desc 'add', 'Настраивает беспарольную авторизацию по ключу'
     option :key
 
@@ -16,8 +16,8 @@ module Locum
       end
       cn.say "Используется ключ #{key_file}"
 
-      ssh_auth = Locum::Ssh.new(key_file)
-      ssh_auth.add_ssh_key
+      ssh_auth = Locum::Ssh.new
+      ssh_auth.add_ssh_key(key_file)
 
       s_out "Теперь вы можете авторизоваться по SSH без пароля"
     end
@@ -85,8 +85,8 @@ EOFBLOCK
       projects.projects.each { |p| say("  * #{p['name']} (##{p['id']} #{p['type']})") }
     end
 
-    desc 'ssh', 'Работа с ключами'
-    subcommand 'ssh', SshCLI
+    desc 'ssh_key', 'Работа с ключами'
+    subcommand 'ssh_key', SshKey
   end
 
 end
