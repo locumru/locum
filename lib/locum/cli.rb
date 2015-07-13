@@ -85,6 +85,12 @@ EOFBLOCK
       projects.projects.each { |p| say("  * #{p['name']} (##{p['id']} #{p['type']})") }
     end
 
+    desc 'cap', 'Настройка проекта для работы с Capistrano'
+
+    def cap
+      Locum::Cap.start
+    end
+
     desc 'ssh_key', 'Работа с ключами'
     subcommand 'ssh_key', SshKey
   end
