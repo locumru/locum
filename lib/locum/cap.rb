@@ -37,5 +37,16 @@ module Locum
     def ssh_key
       Locum::CLI.start(['ssh_key', 'add'])
     end
+
+    def notify
+      cn.say <<EOFBLOCK
+
+   Для проекта создана конфигурация Capistrano и настроен деплой для
+   окружения locum. Проверьте версию ruby в файле <%= color('config/deploy.rb', BOLD) %>
+   и используйте <%= color('cap locum deploy', BOLD) %> для выкладки изменений на сервер.
+
+EOFBLOCK
+    end
+
   end
 end
