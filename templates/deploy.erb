@@ -38,11 +38,13 @@ set :linked_dirs, %w(bin log tmp/cache vendor/bundle public/system)
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+# Configure RVM
+set :rvm_ruby_version, '2.2'
+
 # You unlikely have to change below this line
 # -----------------------------------------------------------------------------
 
 # Configure RVM
-set :rvm_ruby_version, '2.1.5'
 set :rake,            "rvm use #{fetch(:rvm_ruby_version)} do bundle exec rake"
 set :bundle_cmd,      "rvm use #{fetch(:rvm_ruby_version)} do bundle"
 
