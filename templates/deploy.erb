@@ -48,6 +48,8 @@ set :rvm_ruby_version, '2.2'
 set :rake,            "rvm use #{fetch(:rvm_ruby_version)} do bundle exec rake"
 set :bundle_cmd,      "rvm use #{fetch(:rvm_ruby_version)} do bundle"
 
+set :assets_roles, [:web, :app]
+
 set :unicorn_start_cmd,
     "(cd #{fetch(:deploy_to)}/current; rvm use #{fetch(:rvm_ruby_version)} " \
     "do bundle exec unicorn_rails -Dc #{fetch(:unicorn_conf)})"
