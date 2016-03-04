@@ -13,7 +13,7 @@ set :deploy_to,      "/home/#{fetch(:user)}/projects/#{fetch(:application)}"
 set :unicorn_conf,   "/etc/unicorn/#{fetch(:application)}.#{fetch(:login)}.rb"
 set :unicorn_pid,    "/var/run/unicorn/#{fetch(:user)}/" \
                      "#{fetch(:application)}.#{fetch(:login)}.pid"
-set :bundle_without, [:development, :test]
+set :bundle_without, %w{development test}.join(' ')             # this is default
 set :use_sudo,       false
 
 set :repo_url,       "#{fetch(:user)}@<%= @server %>:" \
