@@ -31,7 +31,7 @@ module Locum
     def init
       cn.say("\nНастройка интерфейса командной строки locum.ru\n\n")
 
-      login    = options[:login] || cn.ask('login: ')
+      login    = options[:login] || cn.ask('логин от панели управления: ')
       password = options[:password] || cn.ask('пароль: ') { |q| q.echo = false }
 
       s_out "Получаем токен https://locum.ru"
