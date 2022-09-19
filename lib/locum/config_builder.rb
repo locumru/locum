@@ -6,7 +6,7 @@ module Locum::ConfigBuilder
   CONFIG_FILE = '.locum'.freeze
 
   def self.load
-    YAML.load_file(CONFIG_FILE)
+    YAML.load_file(CONFIG_FILE, permitted_classes: [Locum::Config])
   rescue Errno::ENOENT
     raise Errno::ENOENT, 'Не найден файл конфигурации. Запустите locum init, чтобы его создать'
   end
